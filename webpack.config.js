@@ -6,6 +6,10 @@ module.exports = {
     extension: './src/extension.js'
   },
 
+  cache: true,
+
+  mode: 'development',
+
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js'
@@ -19,7 +23,8 @@ module.exports = {
 
   devServer: {
     contentBase: path.join(__dirname, 'demo'),
-    compress: true,
-    port: 8080  
+    port: 8080,
+
+    hot: true,
   }
 };
