@@ -1,0 +1,25 @@
+{
+  "name": "lorem_entry",
+  "version": "0.0.1",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/x4e554c4c/loremEntry.git"
+  },
+  "author": "x4e554c4c",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/x4e554c4c/loremEntry/issues"
+  },
+  "homepage": "https://github.com/x4e554c4c/loremEntry#readme",
+  "devDependencies": {
+    "webpack-cli": "^4.2.0"
+  },
+  "dependencies": {
+    "webpack": "^5.10.1"
+  }
+}
