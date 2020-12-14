@@ -1,10 +1,20 @@
 new class Injector 
 {
-  link(src) {
-    let script = create
+  computeUrl() {
+    return chrome.runtime.getURL(path + '.js');
+  }
+  
+  link(path) {
+    let script = document.createElement('script');
+
+    // Auto deletion from DOM
+    script.onload = () =>
+      script.remove();
+
+    script.setAttribute('src', src);
+
+    document.body.append(script);
   }
 }
-
-console.log(33);
 
 export default new Injector();
