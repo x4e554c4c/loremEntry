@@ -1,0 +1,8 @@
+{
+	"name": "Lorem Entry",
+	"version": "1.0",
+	"description": "ctrl + shift + L",
+	"manifest_version": 2,
+
+	"web_accessible_resources": ["extension/main.js"]
+}
