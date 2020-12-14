@@ -1,1 +1,1 @@
-(()=>{"use strict";new class{computeUrl(){return chrome.runtime.getURL(path+".js")}link(e){let t=document.createElement("script");t.onload=()=>t.remove(),t.setAttribute("src",src),document.body.append(t)}};const e=new Injector;let t=e.computeUrl("main.js");e.link(t)})();
+(()=>{"use strict";const e=new class{computeUrl(e){return chrome.runtime.getURL(e)}link(e){let t=document.createElement("script");t.onload=()=>t.remove(),t.setAttribute("src",e),document.body.append(t)}};let t=e.computeUrl("dist/main.js");e.link(t)})();

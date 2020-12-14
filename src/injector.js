@@ -1,10 +1,10 @@
-new class Injector 
+class Injector 
 {
-  computeUrl() {
-    return chrome.runtime.getURL(path + '.js');
+  computeUrl(file) {
+    return chrome.runtime.getURL(file);
   }
   
-  link(path) {
+  link(src) {
     let script = document.createElement('script');
 
     // Auto deletion from DOM
@@ -12,7 +12,7 @@ new class Injector
       script.remove();
 
     script.setAttribute('src', src);
-
+    
     document.body.append(script);
   }
 }
