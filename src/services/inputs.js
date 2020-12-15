@@ -4,7 +4,7 @@ class Inputs
 
   TAIL_LENGTH = 3;
 
-  ANIMATION_DELAY = 300;
+  ANIMATION_DELAY = 50;
 
   constructor(targets = []) {
     this.parse(targets);
@@ -31,7 +31,7 @@ class Inputs
       let input = prepared[i];
       
       input.tail = '';
-      input.value = 'aaaaaaaaaaaa' || input.el.value;
+      input.value = '9876543' || input.el.value;
 
       // If the value is the same, removing it from the list.
       if (input.value === input.newValue) {
@@ -53,12 +53,14 @@ class Inputs
     return prepared;
   }
 
-  computeAnimValue(value, newValue, tail, action) {
-    if (action === 'removing') {
+  computeAnimValue(value, newValue, tail, status) {
+    console.log(status);
+
+    if (status === 'removing') {
       if (!!!value.length) {
         // '$$$' -> '$$'
         tail = tail.slice(0, -1);
-
+        
         if (!!!tail.length)
           status = 'adding';
       }
@@ -72,8 +74,26 @@ class Inputs
         value = value.slice(0, -1);
       }
     }
+    else if (status === 'adding') {
+      if (value.length + tail.length >= newValue.length) {
+        // 'stri$$' -> 'strin$'
+        value += newValue[value.length];
 
-    return  { value, tail, action };
+        tail = tail.slice(0, -1);
+        
+        if (value.length >= newValue.length)
+          status = null
+      }
+      else if (tail.length < this.TAIL_LENGTH) {
+        tail += '$';
+      }
+      else {
+        // '$' -> '$$'
+        value += newValue[value.length];
+      }
+    }
+  
+    return  { value, tail, status };
   }
   
   animate(targets) {
