@@ -6,16 +6,20 @@ class Inputs
 
   ANIMATION_DELAY = 50;
 
-  constructor(targets = []) {
+  set(targets = []) {
     this.parse(targets);
   }
 
   parse(inputs) {
+    let targets = [];
     for (let el of inputs) {
-      this._targets.push({
+      targets.push({
         el, status: null,
       });
     }
+
+    this.clearAnimation();
+    this._targets = targets;
   }
 
   computeNewValues(generator) {
@@ -31,12 +35,12 @@ class Inputs
       let input = prepared[i];
       
       input.tail = '';
-      input.value = '9876543' || input.el.value;
+      input.value = input.el.value;
 
       // If the value is the same, removing it from the list.
       if (input.value === input.newValue) {
         input.status = null;
-        prepared.splice(i);
+        prepared.splice(i, 1);
         i--;
 
         continue;
@@ -54,15 +58,13 @@ class Inputs
   }
 
   computeAnimValue(value, newValue, tail, status) {
-    console.log(status);
-
     if (status === 'removing') {
       if (!!!value.length) {
         // '$$$' -> '$$'
         tail = tail.slice(0, -1);
         
         if (!!!tail.length)
-          status = 'adding';
+          status = 'appending';
       }
       else if (tail.length < this.TAIL_LENGTH) {
         // 'strin$' -> 'stri$$'
@@ -74,11 +76,10 @@ class Inputs
         value = value.slice(0, -1);
       }
     }
-    else if (status === 'adding') {
+    else if (status === 'appending') {
       if (value.length + tail.length >= newValue.length) {
         // 'stri$$' -> 'strin$'
         value += newValue[value.length];
-
         tail = tail.slice(0, -1);
         
         if (value.length >= newValue.length)
@@ -97,17 +98,25 @@ class Inputs
   }
   
   animate(targets) {
-    for (let input of targets) {
+    for (let i = 0; i < targets.length; i++) {
+      let input = targets[i];
       let { tail, status, value, newValue } = input;
 
       let computed = 
         this.computeAnimValue(value, newValue, tail, status);
 
       Object.assign(input, computed);
-      
+
       input.el.value = 
-        computed.value + computed.tail
+        computed.value + computed.tail;
+
+      if (computed.status === null) {
+        targets.splice(i, 1);
+        i--;
+      }        
     }
+  
+    return Boolean(targets.length);
   }
 
   clearAnimation() {
@@ -125,10 +134,11 @@ class Inputs
 
     // Computing animation status for targets
     let animated = this.prepareForAnimation();
+
     // Inializing animation loop
     this.animation = 
       setInterval(() => this.animate(animated), this.ANIMATION_DELAY);
   }
 }
 
-export default Inputs;
+export default new Inputs();
