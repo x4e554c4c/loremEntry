@@ -30,20 +30,21 @@ class Inputs
     for (let i = 0; i < prepared.length; i++) {
       let input = prepared[i];
       
-      input.tail = 0;
+      input.tail = '';
+      input.value = 'aaaaaaaaaaaa' || input.el.value;
 
       // If the value is the same, removing it from the list.
-      if (input.el.value === input.newValue) {
+      if (input.value === input.newValue) {
         input.status = null;
         prepared.splice(i);
         i--;
 
-        break
+        continue;
       }
 
-      if (input.el.value) {
+      if (input.value) {
         input.status = 'removing'; 
-        break;
+        continue;
       }
 
       input.status = 'appending';
@@ -51,10 +52,41 @@ class Inputs
 
     return prepared;
   }
+
+  computeAnimValue(value, newValue, tail, action) {
+    if (action === 'removing') {
+      if (!!!value.length) {
+        // '$$$' -> '$$'
+        tail = tail.slice(0, -1);
+
+        if (!!!tail.length)
+          status = 'adding';
+      }
+      else if (tail.length < this.TAIL_LENGTH) {
+        // 'strin$' -> 'stri$$'
+        value = value.slice(0, -1);
+        tail += '$';
+      }
+      else {
+        // 'stri$$' -> 'str$$'
+        value = value.slice(0, -1);
+      }
+    }
+
+    return  { value, tail, action };
+  }
   
   animate(targets) {
     for (let input of targets) {
-      input.el.value = Math.random();
+      let { tail, status, value, newValue } = input;
+
+      let computed = 
+        this.computeAnimValue(value, newValue, tail, status);
+
+      Object.assign(input, computed);
+      
+      input.el.value = 
+        computed.value + computed.tail
     }
   }
 
@@ -73,7 +105,6 @@ class Inputs
 
     // Computing animation status for targets
     let animated = this.prepareForAnimation();
-
     // Inializing animation loop
     this.animation = 
       setInterval(() => this.animate(animated), this.ANIMATION_DELAY);
