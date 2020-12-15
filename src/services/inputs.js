@@ -1,6 +1,8 @@
 class Inputs 
 {
-  constructor(targets) {
+  targets = [];
+
+  constructor(targets = []) {
     this._targets = targets;
   }
 
