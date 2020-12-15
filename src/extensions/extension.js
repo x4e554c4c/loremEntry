@@ -1,4 +1,4 @@
-import Injector from '@/injector.js'
+import Injector from '~/injector.js'
 
 
 let src = Injector.computeUrl('dist/main.js');

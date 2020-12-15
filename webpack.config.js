@@ -1,24 +1,23 @@
 var path = require('path');
 
 module.exports = {
-  entry: {
-    main: './src/main.js',
-    extension: './src/extension.js'
-  },
-
+  mode: 'development',
   cache: true,
 
-  mode: 'development',
+  resolve: {
+    alias: {
+      '~': './',
+    }
+  },
+
+  entry: {
+    extension: './src/extensions/extension.js',
+    main: './src/services/main.js',
+  },
 
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js'
-  },
-
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-    }
   },
 
   devServer: {
